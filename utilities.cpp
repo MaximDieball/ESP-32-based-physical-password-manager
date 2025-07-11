@@ -1,10 +1,10 @@
 #include "utilities.h"
-#include <iostream>
 #include <vector>
 #include <string>
+#include <ArduinoJson.h>
 
-// split splits a string at every accurence of the breaker char
-// split expects a breaker char at the end of the string - else the last chunk will not be read
+// split(String input, char breaker) splits a string at every accurence of the breaker char
+// split(String input, char breaker) expects a breaker char at the end of the string - else the last chunk will not be read
 std::vector<String> Util::split(String input, char breaker){
   std::vector<String> chunks; 
   size_t start = 0;
@@ -15,4 +15,15 @@ std::vector<String> Util::split(String input, char breaker){
     }
   }
   return chunks;
+}
+
+// json(String input) takes a string containing json data and return it as a DynamicJsonDocument 
+DynamicJsonDocument Util::json(String input) {
+    DynamicJsonDocument jsonOutput(512);
+    DeserializationError error = deserializeJson(jsonOutput, input);
+    if (error) {
+        Serial.print("deserialization failed: ");
+        Serial.println(error.c_str());
+    }
+    return jsonOutput;
 }

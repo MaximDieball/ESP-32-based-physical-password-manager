@@ -12,7 +12,7 @@
 TFT_eSPI tft;
 TouchDrvGT911 touch;
 
-#define ADD_PW_SCR 0   // add first password screen
+#define ADD_MPW_SCR 0   // add first password screen
 #define LOCK_SCR 1     // lock screen
 
 ScreenManager scrManager;
@@ -163,20 +163,22 @@ void setup() {
     scrManager.changeScreen(LOCK_SCR);
   } else{
     Serial.println("master password false");
-    scrManager.changeScreen(ADD_PW_SCR);
+    scrManager.changeScreen(ADD_MPW_SCR);
   }
 
   Serial.println("SETUP FINISHED");
 }
 
+// checks if a master password exists
 bool checkForMasterPassword(){
-  String content = sdManager.readFile("/main.txt");
-  std::vector<String> lines = util.split(content, '\n');
-  if (lines.size() == 0){
-    Serial.println("checkForMasterPassword() failed");
-    return false;
-    }
-  return (lines[0] == "None");
+  Serial.println("checkForMasterPassword()");
+  String encryptedSalt = sdManager.readFile("/enSalt.txt");
+  Serial.printf("encryptedSalt : %s - %s\n", encryptedSalt.c_str(), (encryptedSalt != "None") ? "true" : "false");
+  return (encryptedSalt != "None");
+}
+
+bool checkMasterPassword(){
+  return true;
 }
 
 void loop() {
@@ -189,6 +191,11 @@ void loop() {
       if (key != 0x00 && scrManager.focusedTextarea != NULL) {
           if (key == '\b') {
               lv_textarea_del_char(scrManager.focusedTextarea);  // backspace
+              Serial.println("backsapce");
+          } else if (key == '\r' && scrManager.enterFunc){
+            scrManager.enterFunc();   // enter
+            scrManager.focusedTextarea = NULL;
+            Serial.println("enter");
           } else {
               lv_textarea_add_char(scrManager.focusedTextarea, key);  // add char to input field
           }

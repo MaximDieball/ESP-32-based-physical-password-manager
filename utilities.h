@@ -9,7 +9,7 @@
 #pragma once
 #include <Arduino.h>
 #include <vector>
-
+#include <ArduinoJson.h>
 
 
 //! The board peripheral power control pin needs to be set to HIGH when using the peripheral
@@ -59,5 +59,6 @@
 
 class Util{
   public:
-    std::vector<String> split(String input, char breaker);
+    static std::vector<String> split(String input, char breaker);
+    static DynamicJsonDocument json(String input);
 };

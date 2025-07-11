@@ -1,5 +1,5 @@
 #include "SDManager.h"
-
+#include <Arduino.h>
 
 void SDManager::writeFile(String fileName, String string){
   File file = SD.open(fileName, FILE_WRITE);
