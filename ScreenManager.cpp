@@ -1,8 +1,12 @@
 #include "ScreenManager.h"
+#include <Arduino.h>  
 
 void ScreenManager::createScreens() {
     screenArray[0] = createAddPasswordScreen();
     screenArray[1] = createLockScreen();
+
+    if (!screenArray[0]) Serial.println("createAddPasswordScreen() returned NULL!");
+    if (!screenArray[1]) Serial.println("createLockScreen() returned NULL!");
 }
 
 void ScreenManager::changeScreen(int index) {

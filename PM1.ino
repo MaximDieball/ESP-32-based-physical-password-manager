@@ -16,7 +16,7 @@ TouchDrvGT911 touch;
 #define LOCK_SCR 1     // lock screen
 
 ScreenManager scrManager;
-SDManger sdManager;
+SDManager sdManager;
 Util util;
 
 static void disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
@@ -120,9 +120,13 @@ void setupSD(){
   
   }
 
+// declare functions
+bool checkForMasterPassword();
+
 void setup() {
 
   Serial.begin(115200);
+  Serial.println("SETUP START");
     
   pinMode(BOARD_POWERON, OUTPUT);
   digitalWrite(BOARD_POWERON, HIGH);
@@ -146,26 +150,33 @@ void setup() {
   touch.setMirrorXY(false, true);
 
   setupLvgl();
+  setupSD();
 
   pinMode(BOARD_BL_PIN, OUTPUT);
   setBrightness(16);
 
-
+  Serial.println("beginning app startup logic");
   // create screens
   scrManager.createScreens();
   if(checkForMasterPassword()){
-    scrManager.changeScreen(1);
+    Serial.println("master password true");
+    scrManager.changeScreen(LOCK_SCR);
   } else{
-    scrManager.changeScreen(0);
+    Serial.println("master password false");
+    scrManager.changeScreen(ADD_PW_SCR);
   }
 
   Serial.println("SETUP FINISHED");
 }
 
 bool checkForMasterPassword(){
-  String content = sdManager.readFile("main.txt")
-  std::vector<std::string> lines = util.split(content, '\n');
-  return (lines[0] == "none")
+  String content = sdManager.readFile("/main.txt");
+  std::vector<String> lines = util.split(content, '\n');
+  if (lines.size() == 0){
+    Serial.println("checkForMasterPassword() failed");
+    return false;
+    }
+  return (lines[0] == "None");
 }
 
 void loop() {

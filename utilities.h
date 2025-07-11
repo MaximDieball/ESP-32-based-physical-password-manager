@@ -7,6 +7,8 @@
  *
  */
 #pragma once
+#include <Arduino.h>
+#include <vector>
 
 
 
@@ -56,5 +58,6 @@
 
 
 class Util{
-  String[] split(String input, char breaker);    
+  public:
+    std::vector<String> split(String input, char breaker);
 };

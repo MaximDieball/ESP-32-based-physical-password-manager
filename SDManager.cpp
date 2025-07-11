@@ -13,7 +13,7 @@ void SDManager::writeFile(String fileName, String string){
 void SDManager::appendFile(String fileName, String string){
   File file = SD.open(fileName, FILE_APPEND);
   if(!file){
-    return  
+    return;
   }    
   file.print(string);
   file.close();
