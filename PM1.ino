@@ -8,6 +8,7 @@
 #include "utilities.h"
 #include "ScreenManager.h"
 #include "SDManager.h"
+#include "PasswordManager.h"
 
 TFT_eSPI tft;
 TouchDrvGT911 touch;
@@ -119,9 +120,6 @@ void setupSD(){
   
   }
 
-// declare functions
-bool checkForMasterPassword();
-
 void setup() {
 
   Serial.begin(115200);
@@ -157,23 +155,15 @@ void setup() {
   Serial.println("beginning app startup logic");
   // create screens
   scrManager.createScreens();
-  if(checkForMasterPassword()){
-    Serial.println("master password true");
+  if(PasswordManager::checkForMasterPassword()){
+    Serial.println("master password found");
     scrManager.changeScreen(LOCK_SCR);
   } else{
-    Serial.println("master password false");
+    Serial.println("no master password");
     scrManager.changeScreen(ADD_MPW_SCR);
   }
 
   Serial.println("SETUP FINISHED");
-}
-
-// checks if a master password exists
-bool checkForMasterPassword(){
-  Serial.println("checkForMasterPassword()");
-  String masterPasswordHash = SDManager::readFile("/mpwHash.txt");
-  Serial.printf("encryptedSalt : %s - %s\n", masterPasswordHash.c_str(), (masterPasswordHash != "None") ? "true" : "false");
-  return (masterPasswordHash != "None");
 }
 
 bool checkMasterPassword(){
@@ -193,7 +183,6 @@ void loop() {
               Serial.println("backsapce");
           } else if (key == '\r' && scrManager.enterFunc){
             scrManager.enterFunc();   // enter
-            scrManager.focusedTextarea = NULL;
             Serial.println("enter");
           } else {
               lv_textarea_add_char(scrManager.focusedTextarea, key);  // add char to input field

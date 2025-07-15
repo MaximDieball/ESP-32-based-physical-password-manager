@@ -21,4 +21,5 @@ class ScreenManager {
     static void onTextAreaFocused(lv_event_t *e);
     Screen createAddMasterPasswordScreen();
     Screen createLockScreen();
+    static void enterBtnFunc(lv_event_t *e);
 };
