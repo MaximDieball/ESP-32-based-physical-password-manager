@@ -171,9 +171,9 @@ void setup() {
 // checks if a master password exists
 bool checkForMasterPassword(){
   Serial.println("checkForMasterPassword()");
-  String encryptedSalt = SDManager::readFile("/enSalt.txt");
-  Serial.printf("encryptedSalt : %s - %s\n", encryptedSalt.c_str(), (encryptedSalt != "None") ? "true" : "false");
-  return (encryptedSalt != "None");
+  String masterPasswordHash = SDManager::readFile("/mpwHash.txt");
+  Serial.printf("encryptedSalt : %s - %s\n", masterPasswordHash.c_str(), (masterPasswordHash != "None") ? "true" : "false");
+  return (masterPasswordHash != "None");
 }
 
 bool checkMasterPassword(){

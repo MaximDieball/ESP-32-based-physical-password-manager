@@ -1,10 +1,11 @@
 #pragma once
 #include <SPI.h>
+#include <Arduino.h>
 
 class PasswordManager{
 public:
-  void setMasterPassword(String password);
-  type getDecryptedPasswordJson();
-  void encryptAndSavePasswordJson();
-  bool checkMasterPassword(String password);
-}
+  static void setMasterPassword(String password);
+  //static type getDecryptedPasswordJson();
+  static void encryptAndSavePasswordJson();
+  static bool checkMasterPassword(String password);
+};
