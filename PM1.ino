@@ -16,7 +16,6 @@ TouchDrvGT911 touch;
 #define LOCK_SCR 1     // lock screen
 
 ScreenManager scrManager;
-SDManager sdManager;
 Util util;
 
 static void disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
@@ -172,7 +171,7 @@ void setup() {
 // checks if a master password exists
 bool checkForMasterPassword(){
   Serial.println("checkForMasterPassword()");
-  String encryptedSalt = sdManager.readFile("/enSalt.txt");
+  String encryptedSalt = SDManager::readFile("/enSalt.txt");
   Serial.printf("encryptedSalt : %s - %s\n", encryptedSalt.c_str(), (encryptedSalt != "None") ? "true" : "false");
   return (encryptedSalt != "None");
 }
