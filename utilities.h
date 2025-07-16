@@ -56,6 +56,17 @@
 
 #define BOARD_BL_PIN        42
 
+// screen size
+#define SCREEN_WIDTH  320
+#define SCREEN_HEIGHT 240
+
+// screens 
+enum ScreenIndex {
+  ADD_MPW_SCR = 0,
+  LOCK_SCR = 1,
+  HOME_SCR = 2
+};
+
 
 class Util{
   public:

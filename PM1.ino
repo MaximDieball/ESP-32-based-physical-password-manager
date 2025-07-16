@@ -9,12 +9,12 @@
 #include "ScreenManager.h"
 #include "SDManager.h"
 #include "PasswordManager.h"
+#include "Screens/AddMasterPasswordScreen.cpp"
+#include "Screens/LockScreen.cpp"
+#include "Screens/HomeScreen.cpp"
 
 TFT_eSPI tft;
 TouchDrvGT911 touch;
-
-#define ADD_MPW_SCR 0   // add first password screen
-#define LOCK_SCR 1     // lock screen
 
 ScreenManager scrManager;
 Util util;
@@ -157,21 +157,21 @@ void setup() {
   scrManager.createScreens();
   if(PasswordManager::checkForMasterPassword()){
     Serial.println("master password found");
-    scrManager.changeScreen(LOCK_SCR);
+    scrManager.queueScreen(LOCK_SCR);
+    //scrManager.queueScreen(HOME_SCR);
+
   } else{
     Serial.println("no master password");
-    scrManager.changeScreen(ADD_MPW_SCR);
+    scrManager.queueScreen(ADD_MPW_SCR);
   }
 
   Serial.println("SETUP FINISHED");
 }
 
-bool checkMasterPassword(){
-  return true;
-}
-
 void loop() {
   lv_timer_handler();
+  // changing screen if new screen is queued
+  scrManager.screenChangeHandler();
 
   // Check physical keyboard over I2C
   Wire.requestFrom(0x55, 1);  // Address of T-Deck keyboard
