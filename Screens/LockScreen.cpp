@@ -17,12 +17,9 @@ Screen ScreenManager::createLockScreen() {
 
     // password input field
     lv_obj_t *passwordInput = lv_textarea_create(lvScreen);
-
     lv_obj_add_event_cb(passwordInput, onTextAreaFocused, LV_EVENT_FOCUSED, this);
-
     lv_obj_set_width(passwordInput, 200);
     lv_obj_align(passwordInput, LV_ALIGN_CENTER, 0, 0);
-
     lv_textarea_set_placeholder_text(passwordInput, "Enter Password");
     lv_textarea_set_one_line(passwordInput, true);
 
@@ -48,17 +45,24 @@ Screen ScreenManager::createLockScreen() {
     // enter function / called when pressing enter
     screen.enterFunc = [this, passwordInput, resultLabel]() {
       String masterPassword = String(lv_textarea_get_text(passwordInput));
-      if(PasswordManager::checkMasterPassword(masterPassword)){
+      if(passwordManager.checkMasterPassword(masterPassword)){
+        // show result
         Serial.println("Correct Master Password");  
         lv_label_set_text(resultLabel, "Correct");
         lv_obj_set_style_text_color(resultLabel, lv_color_hex(0x00FF00), LV_PART_MAIN); // green 
 
+        // load passwords with master password / not using encryption yet so no master password needed
+        passwordManager.loadPasswordData();
+
+        // queue home screen
         this->queueScreen(HOME_SCR);
 
       } else {
         Serial.println("Wrong Master Password");  
         lv_label_set_text(resultLabel, "Wrong");
         lv_obj_set_style_text_color(resultLabel, lv_color_hex(0xFF0000), LV_PART_MAIN); // red
+
+        // clear password input field
         lv_textarea_set_text(this->focusedTextarea, "");
       }
       

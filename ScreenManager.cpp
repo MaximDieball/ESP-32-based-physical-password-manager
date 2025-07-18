@@ -1,12 +1,12 @@
 #include "ScreenManager.h"
 #include <Arduino.h>  
 #include "SDManager.h"
-#include "PasswordManager.h"
 
 void ScreenManager::createScreens() {
     screenArray[0] = createAddMasterPasswordScreen();
     screenArray[1] = createLockScreen();
     screenArray[2] = createHomeScreen();
+    screenArray[3] = createPasswordManagerScreen();
 }
 
 void ScreenManager::changeScreen(int index) {
@@ -50,7 +50,6 @@ void ScreenManager::screenChangeHandler(){
   }
 }
 
-//  gpt code
 void ScreenManager::onTextAreaFocused(lv_event_t *e) {
     ScreenManager *self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
     self->focusedTextarea = lv_event_get_target(e);

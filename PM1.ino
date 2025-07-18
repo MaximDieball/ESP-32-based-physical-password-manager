@@ -12,11 +12,13 @@
 #include "Screens/AddMasterPasswordScreen.cpp"
 #include "Screens/LockScreen.cpp"
 #include "Screens/HomeScreen.cpp"
+#include "Screens/PasswordManagerScreen.cpp"
+//#include "Screens/ShowUsernameScreen.cpp"
 
 TFT_eSPI tft;
 TouchDrvGT911 touch;
-
-ScreenManager scrManager;
+PasswordManager passwordManager;
+ScreenManager scrManager(passwordManager);
 Util util;
 
 static void disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {

@@ -1,5 +1,6 @@
 #include "SDManager.h"
 #include <Arduino.h>
+#include <ArduinoJson.h>
 
 // removes all prev data from file and write new String to it
 void SDManager::writeFile(String fileName, String string){
@@ -34,4 +35,20 @@ String SDManager::readFile(String fileName){
   }
   file.close();
   return content;
+}
+
+StaticJsonDocument<512> SDManager::readJsonFile(String fileName){
+  StaticJsonDocument<512> jsonData;
+    File file = SD.open(fileName);
+    if(!file){
+      Serial.println("failed to read json file");
+      return jsonData;
+    }
+    DeserializationError error = deserializeJson(jsonData, file);
+    file.close();
+
+    if(error){
+      Serial.println("error deserializing json");  
+    }
+    return jsonData;
 }

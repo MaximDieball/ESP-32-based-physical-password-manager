@@ -64,7 +64,8 @@
 enum ScreenIndex {
   ADD_MPW_SCR = 0,
   LOCK_SCR = 1,
-  HOME_SCR = 2
+  HOME_SCR = 2,
+  PWM_SCR = 3
 };
 
 

@@ -10,6 +10,8 @@
 #include "mbedtls/entropy.h"
 #include "mbedtls/ctr_drbg.h"
 
+#include <ArduinoJson.h>
+
 void PasswordManager::setMasterPassword(String password){
   unsigned char salt[16];
 
@@ -136,4 +138,14 @@ String PasswordManager::generateHashedKey(String password, unsigned char salt[16
   mbedtls_base64_encode(key_output, sizeof(key_output), &key_olen, key, sizeof(key));
   String base64Key = String((char *)key_output);
   return base64Key;
+}
+
+void PasswordManager::loadPasswordData(){
+  passwordData = SDManager::readJsonFile("/main.json"); 
+}
+
+StaticJsonDocument<512> PasswordManager::getPasswordData(){
+  if(!this->passwordData.isNull() && this->passwordData.size() > 0){
+    return this->passwordData;
+  }
 }
