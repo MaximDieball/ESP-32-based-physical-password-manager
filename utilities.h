@@ -62,10 +62,11 @@
 
 // screens 
 enum ScreenIndex {
-  ADD_MPW_SCR = 0,
-  LOCK_SCR = 1,
-  HOME_SCR = 2,
-  PWM_SCR = 3
+  ADD_MPW_SCR = 0,  // add master password screen
+  LOCK_SCR = 1,     
+  HOME_SCR = 2,     
+  PWM_SCR = 3,      // password manager screen
+  USERNAME_SCREEN = 4      
 };
 
 

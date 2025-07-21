@@ -4,22 +4,37 @@
 #include <iostream>
 #include <vector>
 #include <string>
+
 #include "TouchDrvGT911.hpp"
+
 #include "utilities.h"
 #include "ScreenManager.h"
 #include "SDManager.h"
 #include "PasswordManager.h"
+
+// import screen so they get compiled
 #include "Screens/AddMasterPasswordScreen.cpp"
 #include "Screens/LockScreen.cpp"
 #include "Screens/HomeScreen.cpp"
 #include "Screens/PasswordManagerScreen.cpp"
-//#include "Screens/ShowUsernameScreen.cpp"
+#include "Screens/UsernameScreen.cpp"
+
+#include "Fonts/ShareTechMono_Regular.c"
+
+#define USE_CUSTOM_FONT 0
 
 TFT_eSPI tft;
 TouchDrvGT911 touch;
 PasswordManager passwordManager;
 ScreenManager scrManager(passwordManager);
 Util util;
+
+lv_style_t globalStyle;
+#if USE_CUSTOM_FONT
+extern const lv_font_t SHARETECHMONO_REGULAR;
+#endif
+
+extern const lv_font_t SHARETECHMONO_REGULAR;
 
 static void disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
     uint32_t w = area->x2 - area->x1 + 1;
@@ -153,6 +168,16 @@ void setup() {
 
   pinMode(BOARD_BL_PIN, OUTPUT);
   setBrightness(16);
+
+  // global style
+  lv_style_init(&globalStyle);
+  #if USE_CUSTOM_FONT
+  lv_style_set_text_font(&globalStyle, &SHARETECHMONO_REGULAR);
+  #else
+  lv_style_set_text_font(&globalStyle, LV_FONT_DEFAULT);
+  #endif
+
+
 
   Serial.println("beginning app startup logic");
   // create screens

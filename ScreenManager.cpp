@@ -4,31 +4,48 @@
 
 void ScreenManager::createScreens() {
     screenArray[0] = createAddMasterPasswordScreen();
+    Serial.println("CREATE SCREEN AddMasterPasswordScreen");  
     screenArray[1] = createLockScreen();
+    Serial.println("CREATE SCREEN LockScreen");
     screenArray[2] = createHomeScreen();
+    Serial.println("CREATE SCREEN HomeScreen");
     screenArray[3] = createPasswordManagerScreen();
+    Serial.println("CREATE SCREEN PasswordManagerScreen");
+    screenArray[4] = createUsernameScreen();
+    Serial.println("CREATE SCREEN UsernameScreen");
 }
 
 void ScreenManager::changeScreen(int index) {
+    Screen screen = screenArray[index];
+    this->currentScreen = screen;
+    
     // load screen
-    lv_scr_load(screenArray[index].lvScreen);
+    lv_scr_load(screen.lvScreen);
+    
     // set enterFunc
-    this->enterFunc = screenArray[index].enterFunc;
+    this->enterFunc = screen.enterFunc;
+    
     // focus textarea
-    lv_obj_t *textarea = screenArray[index].mainTextarea;
+    lv_obj_t *textarea = screen.mainTextarea;
     this->focusedTextarea = textarea;  // focus text area / for physical keyboard
     if(textarea){
       lv_textarea_set_cursor_pos(textarea, LV_TEXTAREA_CURSOR_LAST);
       lv_obj_add_state(textarea, LV_STATE_FOCUSED);
     }
 
-    Serial.println("succesfully changed screen");  
+    // run onDisplayFunc
+    if(screen.onDisplayFunc){
+        Serial.println("running onDisplayFunc");
+        screen.onDisplayFunc();
+    }
+  
+    Serial.println("succesfully changed screen");
 }
 
 void ScreenManager::enterBtnFunc(lv_event_t *e){  
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t *btn = lv_event_get_target(e);
-  ScreenManager *self = static_cast<ScreenManager*>(lv_event_get_user_data(e)); // get self even though it is a static function
+  ScreenManager *self = static_cast<ScreenManager*>(lv_event_get_user_data(e)); // get self even though it is a static function 
   if(code == LV_EVENT_CLICKED){
     Serial.println("enter/ok button clicked");
     if (self && self->enterFunc){

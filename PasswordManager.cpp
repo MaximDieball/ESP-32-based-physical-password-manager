@@ -11,6 +11,7 @@
 #include "mbedtls/ctr_drbg.h"
 
 #include <ArduinoJson.h>
+#include <vector>
 
 void PasswordManager::setMasterPassword(String password){
   unsigned char salt[16];
@@ -141,11 +142,21 @@ String PasswordManager::generateHashedKey(String password, unsigned char salt[16
 }
 
 void PasswordManager::loadPasswordData(){
-  passwordData = SDManager::readJsonFile("/main.json"); 
-}
-
-StaticJsonDocument<512> PasswordManager::getPasswordData(){
-  if(!this->passwordData.isNull() && this->passwordData.size() > 0){
-    return this->passwordData;
+  StaticJsonDocument<512> rawPasswordData = SDManager::readJsonFile("/main.json"); 
+  std::vector<Password> passwordList;
+  if(!rawPasswordData.isNull() && rawPasswordData.size() > 0){
+    JsonArray passwords = rawPasswordData["passwords"].as<JsonArray>();
+    int passwordDataSize = passwords.size();
+  
+    // loop through data and create buttons
+    for(int i = 0; i < passwordDataSize; i++){
+      JsonObject entry = passwords[i];
+      Password passwordStruct;
+      passwordStruct.website = entry["website"].as<String>();
+      passwordStruct.username = entry["username"].as<String>();
+      passwordStruct.password = entry["password"].as<String>();
+      passwordList.push_back(passwordStruct);
+    }
   }
+  this->passwordList = passwordList;
 }

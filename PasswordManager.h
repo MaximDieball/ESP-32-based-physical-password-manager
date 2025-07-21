@@ -2,6 +2,16 @@
 #include <SPI.h>
 #include <Arduino.h>
 #include <ArduinoJson.h>
+#include <lvgl.h>
+#include <vector>
+
+struct Password {
+    //lv_obj_t* button = nullptr;
+    //std::function<void()> buttonFunc;
+    String website;
+    String username;
+    String password;
+};
 
 
 class PasswordManager{
@@ -11,8 +21,7 @@ public:
   static bool checkForMasterPassword();
   static bool checkMasterPassword(String password);
   void loadPasswordData();
-  StaticJsonDocument<512> getPasswordData();
+  std::vector<Password> passwordList;
 private:
-  StaticJsonDocument<512> passwordData;
   static String generateHashedKey(String password, unsigned char salt[16]); 
 };
