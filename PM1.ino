@@ -11,6 +11,7 @@
 #include "ScreenManager.h"
 #include "SDManager.h"
 #include "PasswordManager.h"
+#include "InputManager.h"
 
 // import screen so they get compiled
 #include "Screens/AddMasterPasswordScreen.cpp"
@@ -25,8 +26,10 @@
 
 TFT_eSPI tft;
 TouchDrvGT911 touch;
+
 PasswordManager passwordManager;
 ScreenManager scrManager(passwordManager);
+InputManager inputManager(scrManager, touch);
 Util util;
 
 lv_style_t globalStyle;
@@ -100,6 +103,17 @@ void setupLvgl() {
     lv_indev_drv_register(&indev_drv);
 }
 
+void touchInputSetup(){
+  pinMode(BOARD_TOUCH_INT, INPUT);
+  delay(20);
+  Wire.begin(BOARD_I2C_SDA, BOARD_I2C_SCL);
+  touch.setPins(-1, BOARD_TOUCH_INT);
+  touch.begin(Wire, GT911_SLAVE_ADDRESS_L);
+  touch.setMaxCoordinates(320, 240);
+  touch.setSwapXY(true);
+  touch.setMirrorXY(false, true);
+}
+
 void setupSD(){
   digitalWrite(BOARD_SDCARD_CS, HIGH);
   digitalWrite(RADIO_CS_PIN, HIGH);
@@ -154,15 +168,7 @@ void setup() {
   tft.setRotation(1);
   tft.fillScreen(TFT_BLACK);
 
-  pinMode(BOARD_TOUCH_INT, INPUT);
-  delay(20);
-  Wire.begin(BOARD_I2C_SDA, BOARD_I2C_SCL);
-  touch.setPins(-1, BOARD_TOUCH_INT);
-  touch.begin(Wire, GT911_SLAVE_ADDRESS_L);
-  touch.setMaxCoordinates(320, 240);
-  touch.setSwapXY(true);
-  touch.setMirrorXY(false, true);
-
+  touchInputSetup();
   setupLvgl();
   setupSD();
 
@@ -200,22 +206,8 @@ void loop() {
   // changing screen if new screen is queued
   scrManager.screenChangeHandler();
 
-  // Check physical keyboard over I2C
-  Wire.requestFrom(0x55, 1);  // Address of T-Deck keyboard
-  while (Wire.available()) {
-      char key = Wire.read();
-      if (key != 0x00 && scrManager.focusedTextarea != NULL) {
-          if (key == '\b') {
-              lv_textarea_del_char(scrManager.focusedTextarea);  // backspace
-              Serial.println("backsapce");
-          } else if (key == '\r' && scrManager.enterFunc){
-            scrManager.enterFunc();   // enter
-            Serial.println("enter");
-          } else {
-              lv_textarea_add_char(scrManager.focusedTextarea, key);  // add char to input field
-          }
-      }
-  }
+  inputManager.keyboardUpdate();
+  inputManager.touchUpdate();
   
   delay(5);
 }

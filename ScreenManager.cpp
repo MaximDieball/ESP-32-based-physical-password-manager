@@ -24,6 +24,8 @@ void ScreenManager::changeScreen(int index) {
     
     // set enterFunc
     this->enterFunc = screen.enterFunc;
+    // set swipeFunc
+    this->swipeFunc = screen.swipeFunc;
     
     // focus textarea
     lv_obj_t *textarea = screen.mainTextarea;

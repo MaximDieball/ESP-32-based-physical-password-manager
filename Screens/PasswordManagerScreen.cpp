@@ -84,8 +84,8 @@ Screen ScreenManager::createPasswordManagerScreen() {
   int passwordDataSize = passwordData.size();
 
   // hard coded geometry for each button
-  int heights[5]    = { 20, 30, 40, 30, 20 };
-  int y_positions[5] = { -80, -45, 0, 45, 80 };
+  int heights[5]    = {20, 30, 40, 30, 20};
+  int y_positions[5] = {-80+10,-45+10,0+10,45+10,80+10};
 
   // create 5 password button
   for(int i = 0; i < 5; i++){
@@ -120,18 +120,28 @@ Screen ScreenManager::createPasswordManagerScreen() {
     this->passwordButtons[i] = btn;
   }
 
-  int selectedPasswordIndex = 0;  // password in the middle of screen
-  displayPasswords(selectedPasswordIndex);
+  displayPasswords(this->selectedPasswordIndex);
 
   // back button
   lv_obj_t *backBtn = lv_btn_create(lvScreen);
   lv_obj_set_size(backBtn, 40, 40);
   lv_obj_align(backBtn, LV_ALIGN_TOP_LEFT, 10, 10);
+  lv_obj_add_event_cb(backBtn, onBackBtnPressed, LV_EVENT_CLICKED, this);
   lv_obj_t *backBtnLabel = lv_label_create(backBtn);
   lv_label_set_text(backBtnLabel, "<-");
   lv_obj_align(backBtnLabel, LV_ALIGN_CENTER, 0, 0);
-  lv_obj_add_event_cb(backBtn, onBackBtnPressed, LV_EVENT_CLICKED, this);
   lv_obj_add_style(backBtnLabel, &globalStyle, 0);
+  lv_obj_add_style(backBtn, &globalStyle, 0);
+
+  // add password button
+  lv_obj_t *addPwButton = lv_btn_create(lvScreen);
+  lv_obj_set_size(addPwButton, 40, 40);
+  lv_obj_align(addPwButton, LV_ALIGN_TOP_RIGHT, -10, 10);
+  lv_obj_add_event_cb(addPwButton, onBackBtnPressed, LV_EVENT_CLICKED, this); // TODO 
+  lv_obj_t *addPwLabel = lv_label_create(addPwButton);
+  lv_label_set_text(addPwLabel, "+");
+  lv_obj_align(addPwLabel, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_add_style(addPwLabel, &globalStyle, 0);
   lv_obj_add_style(backBtn, &globalStyle, 0);
 
   // screen stuct
@@ -140,6 +150,18 @@ Screen ScreenManager::createPasswordManagerScreen() {
   screen.mainTextarea = NULL;
   screen.onDisplayFunc = [this]() {
     this->displayPasswords(0);
+  };
+  screen.swipeFunc = [this](String direction) {
+    int &selectedPasswordIndex = this->selectedPasswordIndex;
+
+    if(direction == "UP"){
+      selectedPasswordIndex = selectedPasswordIndex - 1;
+      this->displayPasswords(selectedPasswordIndex);
+    } else if(direction == "DOWN"){
+      selectedPasswordIndex = selectedPasswordIndex + 1;
+      this->displayPasswords(selectedPasswordIndex);
+    }
+
   };
   
   // enter function / called when pressing enter
