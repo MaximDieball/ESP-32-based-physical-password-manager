@@ -7,22 +7,19 @@
 
 #include "TouchDrvGT911.hpp"
 
-#include "utilities.h"
-#include "ScreenManager.h"
-#include "SDManager.h"
-#include "PasswordManager.h"
-#include "InputManager.h"
+#include "src/utilities.h"
+#include "src/ScreenManager.h"
+#include "src/SDManager.h"
+#include "src/PasswordManager.h"
+#include "src/InputManager.h"
 
-// import screen so they get compiled
-#include "Screens/AddMasterPasswordScreen.cpp"
-#include "Screens/LockScreen.cpp"
-#include "Screens/HomeScreen.cpp"
-#include "Screens/PasswordManagerScreen.cpp"
-#include "Screens/UsernameScreen.cpp"
+// import Screens.h / so all screens get compiled
+//#include "Screens/Screens.h"
 
 #include "Fonts/ShareTechMono_Regular.c"
+#include "Fonts/ShareTechMono_Regular_28.c"
 
-#define USE_CUSTOM_FONT 0
+#define USE_CUSTOM_STYLE 1
 
 TFT_eSPI tft;
 TouchDrvGT911 touch;
@@ -32,12 +29,12 @@ ScreenManager scrManager(passwordManager);
 InputManager inputManager(scrManager, touch);
 Util util;
 
+// styles
 lv_style_t globalStyle;
-#if USE_CUSTOM_FONT
-extern const lv_font_t SHARETECHMONO_REGULAR;
-#endif
+lv_style_t titel;
+//extern const lv_font_t SHARETECHMONO_REGULAR;
+//extern const lv_font_t SHARETECHMONO_REGULAR_28;
 
-extern const lv_font_t SHARETECHMONO_REGULAR;
 
 static void disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
     uint32_t w = area->x2 - area->x1 + 1;
@@ -177,13 +174,23 @@ void setup() {
 
   // global style
   lv_style_init(&globalStyle);
-  #if USE_CUSTOM_FONT
+  #if USE_CUSTOM_STYLE
   lv_style_set_text_font(&globalStyle, &SHARETECHMONO_REGULAR);
+  lv_style_set_radius(&globalStyle, 0);
+  lv_style_set_bg_color(&globalStyle, lv_color_black());
+  lv_style_set_border_color(&globalStyle, lv_color_white());
+  lv_style_set_border_width(&globalStyle, 2);
+  lv_style_set_border_opa(&globalStyle, LV_OPA_COVER);
   #else
   lv_style_set_text_font(&globalStyle, LV_FONT_DEFAULT);
   #endif
 
-
+  lv_style_init(&titel);
+  #if USE_CUSTOM_STYLE
+  lv_style_set_text_font(&titel, &SHARETECHMONO_REGULAR_28);
+  #else
+  lv_style_set_text_font(&titel, &lv_font_montserrat_28);
+  #endif
 
   Serial.println("beginning app startup logic");
   // create screens

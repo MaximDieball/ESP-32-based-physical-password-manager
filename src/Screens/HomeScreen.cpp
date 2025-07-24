@@ -5,6 +5,7 @@
 #include "../utilities.h"
 
 extern lv_style_t globalStyle;  // global styling
+extern lv_style_t titel;
 
 static void onPasswordManagerBtnClicked(lv_event_t *e){
   auto self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
@@ -16,8 +17,10 @@ Screen ScreenManager::createHomeScreen(){
   lv_obj_t *lvScreen = lv_obj_create(NULL);
   lv_obj_clear_flag(lvScreen, LV_OBJ_FLAG_SCROLLABLE);
 
-  // set background color
+  // set style
   lv_obj_set_style_bg_color(lvScreen, lv_color_hex(0x000000), LV_PART_MAIN);
+  //lv_obj_add_style(lvScreen, &globalStyle, 0);
+
   
   int btnWidth = SCREEN_WIDTH/2-20;
   int btnHeight = SCREEN_HEIGHT/2-20;
@@ -29,7 +32,7 @@ Screen ScreenManager::createHomeScreen(){
   lv_obj_t *lockDeviceLable = lv_label_create(lockDeviceBtn);
   lv_label_set_text(lockDeviceLable, "Lock Device");
   lv_obj_center(lockDeviceLable);
-  lv_obj_add_style(lockDeviceLable, &globalStyle, 0);
+  lv_obj_add_style(lockDeviceBtn, &globalStyle, 0);
   // settings button
   lv_obj_t *settingBtn = lv_btn_create(lvScreen);
   lv_obj_set_size(settingBtn, btnWidth, btnHeight);
@@ -37,7 +40,7 @@ Screen ScreenManager::createHomeScreen(){
   lv_obj_t *settingLable = lv_label_create(settingBtn);
   lv_label_set_text(settingLable, "Settings");
   lv_obj_center(settingLable);
-  lv_obj_add_style(settingLable, &globalStyle, 0);
+  lv_obj_add_style(settingBtn, &globalStyle, 0);
   // 2fa button
   lv_obj_t *tfaBtn = lv_btn_create(lvScreen);
   lv_obj_set_size(tfaBtn, btnWidth, btnHeight);
@@ -45,7 +48,7 @@ Screen ScreenManager::createHomeScreen(){
   lv_obj_t *tfaLabel = lv_label_create(tfaBtn);
   lv_label_set_text(tfaLabel, "2FA");
   lv_obj_center(tfaLabel);
-  lv_obj_add_style(tfaLabel, &globalStyle, 0);
+  lv_obj_add_style(tfaBtn, &globalStyle, 0);
   // password manager button
   lv_obj_t *passwordManagerBtn = lv_btn_create(lvScreen);
   lv_obj_set_size(passwordManagerBtn, btnWidth, btnHeight);

@@ -11,8 +11,8 @@ void ScreenManager::createScreens() {
     Serial.println("CREATE SCREEN HomeScreen");
     screenArray[3] = createPasswordManagerScreen();
     Serial.println("CREATE SCREEN PasswordManagerScreen");
-    screenArray[4] = createUsernameScreen();
-    Serial.println("CREATE SCREEN UsernameScreen");
+    screenArray[4] = createPasswordScreen();
+    Serial.println("CREATE SCREEN PasswordScreen");
 }
 
 void ScreenManager::changeScreen(int index) {

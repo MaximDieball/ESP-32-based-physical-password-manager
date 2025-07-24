@@ -42,13 +42,10 @@ class ScreenManager {
     Screen createLockScreen();
     Screen createHomeScreen();
     Screen createPasswordManagerScreen();
-    Screen createUsernameScreen();
+    Screen createPasswordScreen();
 
     // password manager screen
     void displayPasswords(int i);
     lv_obj_t* passwordButtons[5];
     int selectedPasswordIndex = 0;
-    
-    // username screen
-    void displayUsername();
 };

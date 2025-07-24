@@ -5,6 +5,7 @@
 #include <Arduino.h>
 
 extern lv_style_t globalStyle;  // global styling
+extern lv_style_t titel;
 
 
 Screen ScreenManager::createAddMasterPasswordScreen() {
@@ -19,6 +20,7 @@ Screen ScreenManager::createAddMasterPasswordScreen() {
   lv_label_set_text(label, "Set your Master Password");
   lv_obj_align(label, LV_ALIGN_CENTER, 0, -50);
   lv_obj_add_style(label, &globalStyle, 0);
+  lv_obj_set_style_border_opa(label, LV_OPA_TRANSP, 0);
   
   // password input field
   lv_obj_t *passwordInput = lv_textarea_create(lvScreen);
@@ -47,6 +49,7 @@ Screen ScreenManager::createAddMasterPasswordScreen() {
   lv_obj_align(okButtonLabel, LV_ALIGN_CENTER, 0, 60);
   lv_obj_add_event_cb(okButton, ScreenManager::enterBtnFunc, LV_EVENT_CLICKED, this);
   lv_obj_add_style(okButton, &globalStyle, 0);
+  lv_obj_set_style_border_opa(okButtonLabel, LV_OPA_TRANSP, 0);
 
   // screen stuct
   Screen screen;

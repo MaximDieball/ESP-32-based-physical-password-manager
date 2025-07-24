@@ -6,12 +6,13 @@
 #include "../utilities.h"
 
 extern lv_style_t globalStyle;  // global styling
+extern lv_style_t titel;
 
 // selected password / passed to next screen 
 Password passwordStruct;
 std::vector<Password> passwordList;
 
-void onBackBtnPressed(lv_event_t *e){
+static void onBackBtnPressed(lv_event_t *e){
   auto self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
   self->queueScreen(HOME_SCR);
 }
@@ -64,7 +65,6 @@ void ScreenManager::displayPasswords(int i){
 
     // change label
     lv_label_set_text(websiteLabel, entry.website.c_str());
-    lv_obj_add_style(websiteLabel, &globalStyle, 0);
 
     // create context / store the password for each button in array (with this/self so both can get passed to the function as one obj)
     PasswordButtonContext* ctx = new PasswordButtonContext{ this, entry };
@@ -79,13 +79,23 @@ Screen ScreenManager::createPasswordManagerScreen() {
   lv_obj_t *lvScreen = lv_obj_create(NULL);
   lv_obj_clear_flag(lvScreen, LV_OBJ_FLAG_SCROLLABLE);
 
+  // set style
+  lv_obj_set_style_bg_color(lvScreen, lv_color_hex(0x000000), LV_PART_MAIN);
+  //lv_obj_add_style(lvScreen, &globalStyle, 0);
+
+  // passwords label
+  lv_obj_t *paswordsLabel = lv_label_create(lvScreen);
+  lv_label_set_text(paswordsLabel, "Passwords");
+  lv_obj_align(paswordsLabel, LV_ALIGN_TOP_MID, 0, 15);
+  lv_obj_add_style(paswordsLabel, &titel, 0);
+
   // get password json data
   std::vector<Password> passwordData = this->passwordManager.passwordList;
   int passwordDataSize = passwordData.size();
 
   // hard coded geometry for each button
   int heights[5]    = {20, 30, 40, 30, 20};
-  int y_positions[5] = {-80+10,-45+10,0+10,45+10,80+10};
+  int y_positions[5] = {-80+20,-45+20,0+20,45+20,80+20};
 
   // create 5 password button
   for(int i = 0; i < 5; i++){
@@ -103,19 +113,18 @@ Screen ScreenManager::createPasswordManagerScreen() {
     lv_obj_t *websiteLabel = lv_label_create(btn);
     lv_label_set_text(websiteLabel, "NONE");
     lv_obj_center(websiteLabel);
-    lv_obj_add_style(websiteLabel, &globalStyle, 0);
 
     // bulletpoint label
     lv_obj_t *bulletpointLabel = lv_label_create(btn);
     lv_label_set_text(bulletpointLabel, "<>");
     lv_obj_align(bulletpointLabel, LV_ALIGN_LEFT_MID, 0, 0);
-    lv_obj_add_style(bulletpointLabel, &globalStyle, 0);
 
     // arrow label
     lv_obj_t *arrowLabel = lv_label_create(btn);
     lv_label_set_text(arrowLabel, "->");
     lv_obj_align(arrowLabel, LV_ALIGN_RIGHT_MID, 0, 0);
-    lv_obj_add_style(arrowLabel, &globalStyle, 0);
+
+    lv_obj_add_style(btn, &globalStyle, 0);
 
     this->passwordButtons[i] = btn;
   }
@@ -130,7 +139,6 @@ Screen ScreenManager::createPasswordManagerScreen() {
   lv_obj_t *backBtnLabel = lv_label_create(backBtn);
   lv_label_set_text(backBtnLabel, "<-");
   lv_obj_align(backBtnLabel, LV_ALIGN_CENTER, 0, 0);
-  lv_obj_add_style(backBtnLabel, &globalStyle, 0);
   lv_obj_add_style(backBtn, &globalStyle, 0);
 
   // add password button
@@ -141,8 +149,7 @@ Screen ScreenManager::createPasswordManagerScreen() {
   lv_obj_t *addPwLabel = lv_label_create(addPwButton);
   lv_label_set_text(addPwLabel, "+");
   lv_obj_align(addPwLabel, LV_ALIGN_CENTER, 0, 0);
-  lv_obj_add_style(addPwLabel, &globalStyle, 0);
-  lv_obj_add_style(backBtn, &globalStyle, 0);
+  lv_obj_add_style(addPwButton, &globalStyle, 0);
 
   // screen stuct
   Screen screen;
