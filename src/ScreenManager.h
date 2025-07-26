@@ -18,6 +18,8 @@ class ScreenManager {
   public:
     ScreenManager(PasswordManager& passwordManager)
       : passwordManager(passwordManager) {}
+
+    PasswordManager passwordManager;
       
     Password selectedPassword;
     lv_obj_t *focusedTextarea = NULL; // track current text area 
@@ -29,10 +31,9 @@ class ScreenManager {
     void createScreens();
     void screenChangeHandler(); // changes screen if any screen is queued
     void queueScreen(int screenIndex);
+    void reset();
   
   private:
-    PasswordManager passwordManager;
-
     int queuedScreen = -1; // index of screen 
     void changeScreen(int index);
     static void onTextAreaFocused(lv_event_t *e);

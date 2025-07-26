@@ -73,3 +73,9 @@ void ScreenManager::onTextAreaFocused(lv_event_t *e) {
     ScreenManager *self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
     self->focusedTextarea = lv_event_get_target(e);
 }
+
+void ScreenManager::reset(){
+  this->passwordManager.passwordList.clear();
+  this->focusedTextarea = NULL;
+  //TODO delete saved password
+}

@@ -53,15 +53,12 @@ Screen ScreenManager::createLockScreen() {
   screen.enterFunc = [this, passwordInput, resultLabel]() {
     String masterPassword = String(lv_textarea_get_text(passwordInput));
     if(passwordManager.checkMasterPassword(masterPassword)){
-      // show result
       Serial.println("Correct Master Password");  
-      lv_label_set_text(resultLabel, "Correct");
-      lv_obj_set_style_text_color(resultLabel, lv_color_hex(0x00FF00), LV_PART_MAIN); // green 
+      lv_label_set_text(resultLabel, ""); // make sure to remove "Wrong" 
 
       // load passwords with master password / not using encryption yet so no master password needed
       passwordManager.loadPasswordData();
 
-      // queue home screen
       this->queueScreen(HOME_SCR);
 
     } else {
@@ -72,7 +69,11 @@ Screen ScreenManager::createLockScreen() {
       // clear password input field
       lv_textarea_set_text(this->focusedTextarea, "");
     }
-    
+  };
+
+  screen.onDisplayFunc = [this]() {
+    this->displayPasswords(0);
+    lv_textarea_set_text(this->focusedTextarea, "");
   };
 
   return screen;

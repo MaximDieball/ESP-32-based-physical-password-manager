@@ -11,6 +11,11 @@ static void onPasswordManagerBtnClicked(lv_event_t *e){
   auto self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
   self->queueScreen(PWM_SCR);
 }
+static void onLockDeviceBtnCLicked(lv_event_t *e){
+  auto self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
+  self->queueScreen(LOCK_SCR);
+  self->reset();
+}
 
 Screen ScreenManager::createHomeScreen(){
   // base screen / not scrollabel
@@ -32,6 +37,7 @@ Screen ScreenManager::createHomeScreen(){
   lv_obj_t *lockDeviceLable = lv_label_create(lockDeviceBtn);
   lv_label_set_text(lockDeviceLable, "Lock Device");
   lv_obj_center(lockDeviceLable);
+  lv_obj_add_event_cb(lockDeviceBtn, onLockDeviceBtnCLicked, LV_EVENT_CLICKED, this);
   lv_obj_add_style(lockDeviceBtn, &globalStyle, 0);
   // settings button
   lv_obj_t *settingBtn = lv_btn_create(lvScreen);

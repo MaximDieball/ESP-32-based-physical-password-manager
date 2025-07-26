@@ -95,7 +95,7 @@ Screen ScreenManager::createPasswordManagerScreen() {
 
   // hard coded geometry for each button
   int heights[5]    = {20, 30, 40, 30, 20};
-  int y_positions[5] = {-80+20,-45+20,0+20,45+20,80+20};
+  int y_positions[5] = {-80+22,-45+22,0+22,45+22,80+22};
 
   // create 5 password button
   for(int i = 0; i < 5; i++){
