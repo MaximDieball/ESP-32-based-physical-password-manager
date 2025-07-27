@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "lockloadingscreen_unlock": "cpp"
+        "lockloadingscreen_unlock": "cpp",
+        "addpasswordscreen_website": "cpp"
     }
 }

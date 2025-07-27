@@ -3,16 +3,15 @@
 #include "SDManager.h"
 
 void ScreenManager::createScreens() {
-    screenArray[0] = createAddMasterPasswordScreen();
-    Serial.println("CREATE SCREEN AddMasterPasswordScreen");  
+    screenArray[0] = createAddMasterPasswordScreen();  
     screenArray[1] = createLockScreen();
-    Serial.println("CREATE SCREEN LockScreen");
-    screenArray[2] = createHomeScreen();
-    Serial.println("CREATE SCREEN HomeScreen");
+    screenArray[2] = createHomeScreen();;
     screenArray[3] = createPasswordManagerScreen();
-    Serial.println("CREATE SCREEN PasswordManagerScreen");
     screenArray[4] = createPasswordScreen();
-    Serial.println("CREATE SCREEN PasswordScreen");
+    screenArray[5] = createAddPasswordScreen_Website();
+    screenArray[6] = createAddPasswordScreen_Username();
+    screenArray[7] = createAddPasswordScreen_Password();
+    screenArray[8] = createAddPasswordScreen_Confirm();
 }
 
 void ScreenManager::changeScreen(int index) {

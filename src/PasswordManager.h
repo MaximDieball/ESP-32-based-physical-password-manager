@@ -21,6 +21,7 @@ public:
   static bool checkForMasterPassword();
   static bool checkMasterPassword(String password);
   void loadPasswordData();
+  void savePasswordData();
   std::vector<Password> passwordList;
 private:
   static String generateHashedKey(String password, unsigned char salt[16]); 

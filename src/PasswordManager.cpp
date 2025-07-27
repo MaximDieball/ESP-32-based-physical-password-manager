@@ -160,3 +160,19 @@ void PasswordManager::loadPasswordData(){
   }
   this->passwordList = passwordList;
 }
+
+void PasswordManager::savePasswordData(){
+  StaticJsonDocument<512> rawPasswordData;
+  JsonArray passwords = rawPasswordData.createNestedArray("passwords");
+  std::vector<Password> passwordList = this->passwordList;
+  int passwordDataSize = passwordList.size();
+
+  for(int i = 0; i < passwordDataSize; i++){
+    JsonObject jsonEntry = passwords.createNestedObject();
+    jsonEntry["website"] = passwordList[i].website;
+    jsonEntry["username"] = passwordList[i].username;
+    jsonEntry["password"] = passwordList[i].password;
+  }
+
+  SDManager::writeJsonFile("/main.json", rawPasswordData);
+}

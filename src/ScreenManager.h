@@ -20,10 +20,12 @@ class ScreenManager {
       : passwordManager(passwordManager) {}
 
     PasswordManager passwordManager;
-      
+    // TODO maybe move to password manager
     Password selectedPassword;
+    Password newPassword;
+    
     lv_obj_t *focusedTextarea = NULL; // track current text area 
-    Screen screenArray[5]; // array storing all screens/pages
+    Screen screenArray[9]; // array storing all screens/pages
     Screen currentScreen;
     std::function<void()> enterFunc;  // pointing to function that is called when pressing enter
     std::function<void(String direction)> swipeFunc;  // pointing to function that is called when user swipes
@@ -44,6 +46,10 @@ class ScreenManager {
     Screen createHomeScreen();
     Screen createPasswordManagerScreen();
     Screen createPasswordScreen();
+    Screen createAddPasswordScreen_Website();
+    Screen createAddPasswordScreen_Username();
+    Screen createAddPasswordScreen_Password();
+    Screen createAddPasswordScreen_Confirm();
 
     // password manager screen
     void displayPasswords(int i);

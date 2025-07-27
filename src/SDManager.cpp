@@ -52,3 +52,18 @@ StaticJsonDocument<512> SDManager::readJsonFile(String fileName){
     }
     return jsonData;
 }
+
+// removes all prev data from file and write new Json Data to it
+void SDManager::writeJsonFile(String fileName, StaticJsonDocument<512> jsonData){
+  SD.remove(fileName);
+  File file = SD.open(fileName, FILE_WRITE);
+  if(!file){
+    Serial.println("failed to write json file");
+    return;
+  }
+  if (serializeJson(jsonData, file) == 0) {
+    Serial.println("failed to serialize json");
+  }
+
+  file.close();
+}

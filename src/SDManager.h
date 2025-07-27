@@ -10,4 +10,5 @@ class SDManager{
     static void appendFile(String fileName, String string);
     static String readFile(String fileName);
     static StaticJsonDocument<512> readJsonFile(String fileName);
+    static void writeJsonFile(String fileName, StaticJsonDocument<512> jsonData);
 };

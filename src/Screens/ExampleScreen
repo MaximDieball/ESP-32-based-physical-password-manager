@@ -1,0 +1,36 @@
+#include "../ScreenManager.h"
+#include "../PasswordManager.h"
+#include "../SDManager.h"
+#include <Arduino.h>
+#include "../utilities.h"
+
+extern lv_style_t globalStyle;  // global styling
+extern lv_style_t titel;
+
+Screen ScreenManager::create___Screen() {
+    lv_obj_t *lvScreen = lv_obj_create(NULL);
+
+    // set style
+    lv_obj_set_style_bg_color(lvScreen, lv_color_hex(0x000000), LV_PART_MAIN);
+    //lv_obj_add_style(lvScreen, &globalStyle, 0);
+
+    // code
+
+    // screen stuct
+    Screen screen;
+    screen.lvScreen = lvScreen;
+    screen.mainTextarea = NULL;
+    screen.onDisplayFunc = [this]() {
+        Serial.println("onDisplayFunc");
+    };
+
+    // enter function / called when pressing enter
+    screen.enterFunc = []() {
+        Serial.println("enterFunc");
+    };
+
+    // updatable object
+    screen.updatableObjects["someObject"] = someObject;
+
+    return screen;
+}

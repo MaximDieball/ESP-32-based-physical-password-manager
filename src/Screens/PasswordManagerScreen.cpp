@@ -17,6 +17,11 @@ static void onBackBtnPressed(lv_event_t *e){
   self->queueScreen(HOME_SCR);
 }
 
+static void onAddPasswordBtnClicked(lv_event_t *e){
+  auto self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
+  self->queueScreen(ADD_PASSWORD_SCREEN_WEBSITE);
+}
+
 // saving the password Struct for each button and ScreenManager so both can get passed to the button function in one obj
 struct PasswordButtonContext {
   ScreenManager* self;
@@ -145,7 +150,7 @@ Screen ScreenManager::createPasswordManagerScreen() {
   lv_obj_t *addPwButton = lv_btn_create(lvScreen);
   lv_obj_set_size(addPwButton, 40, 40);
   lv_obj_align(addPwButton, LV_ALIGN_TOP_RIGHT, -10, 10);
-  lv_obj_add_event_cb(addPwButton, onBackBtnPressed, LV_EVENT_CLICKED, this); // TODO 
+  lv_obj_add_event_cb(addPwButton, onAddPasswordBtnClicked, LV_EVENT_CLICKED, this); // TODO 
   lv_obj_t *addPwLabel = lv_label_create(addPwButton);
   lv_label_set_text(addPwLabel, "+");
   lv_obj_align(addPwLabel, LV_ALIGN_CENTER, 0, 0);

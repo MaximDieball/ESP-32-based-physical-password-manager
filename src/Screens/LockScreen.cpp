@@ -36,7 +36,7 @@ Screen ScreenManager::createLockScreen() {
   lv_obj_t *okButtonLabel = lv_label_create(okButton);
   lv_label_set_text(okButtonLabel, "Unlock");
   lv_obj_center(okButtonLabel);
-  lv_obj_add_event_cb(okButton, ScreenManager::enterBtnFunc, LV_EVENT_CLICKED, this);
+  lv_obj_add_event_cb(okButton, ScreenManager::enterBtnFunc, LV_EVENT_CLICKED, this); // ScreenManager::enterBtnFunc / function that calls the current enter function
   lv_obj_add_style(okButton, &globalStyle, 0);
 
   // result label
