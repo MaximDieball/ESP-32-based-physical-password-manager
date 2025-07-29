@@ -36,7 +36,7 @@ void onPasswordBtnClicked(lv_event_t *e) {
   auto self = ctx->self;
   // set selected Password and queue username screen
   self->selectedPassword = password;
-  self->queueScreen(USERNAME_SCREEN);
+  self->queueScreen(PASSWORD_SCREEN);
 }
 
 void ScreenManager::displayPasswords(int i){

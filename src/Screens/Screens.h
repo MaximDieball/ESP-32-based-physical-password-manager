@@ -10,3 +10,4 @@
 #include "AddPasswordScreen_Username"
 #include "AddPasswordScreen_Password"
 #include "AddPasswordScreen_Confirm"
+#include "EditPasswordScreen_Confirm"

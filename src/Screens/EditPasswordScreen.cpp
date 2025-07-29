@@ -9,53 +9,41 @@ extern lv_style_t titel;
 
 static void onBackBtnPressed(lv_event_t *e){
     auto self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
-    self->queueScreen(ADD_PASSWORD_SCREEN_PASSWORD);
+    self->queueScreen(PASSWORD_SCREEN);
 }
 
-static void onSaveBtnPressed(lv_event_t *e){
+static void onEditBtnPressed(lv_event_t *e){
     auto self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
+    // add new password but set values to selected password before to edit the password / adding new password will delete old password
+    self->newPassword.website = self->selectedPassword.website;
+    self->newPassword.prevWebsite = self->selectedPassword.website;
+    self->newPassword.username = self->selectedPassword.username;
+    self->newPassword.password = self->selectedPassword.password;
+    self->queueScreen(ADD_PASSWORD_SCREEN_WEBSITE);
+}
 
-    // save new password / check if website already exists and delete old entry
+static void onDeleteBtnPressed(lv_event_t *e){
+    auto self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
     std::vector<Password>* passwordList = &self->passwordManager.passwordList;
-    String newWebsite = self->newPassword.website;
-    String prevWebsite = self->newPassword.prevWebsite; // used to find and delete old password if website edited 
-
+    String website = self->selectedPassword.website;
     for(size_t i = 0; i < passwordList->size(); i++){
-        if((*passwordList)[i].website == newWebsite || (*passwordList)[i].website == prevWebsite ){
+        if((*passwordList)[i].website == website){
             passwordList->erase(passwordList->begin() + i);
             i--; // skip index because one entry was removed
         }
     }
-
-    passwordList->push_back(self->newPassword);
     self->passwordManager.savePasswordData();
-
     self->queueScreen(PWM_SCR);
-
-    // clear input fieds
-    lv_obj_t *passwordInput = self->screenArray[ADD_PASSWORD_SCREEN_PASSWORD].updatableObjects["passwordInput"];
-    lv_obj_t *usernameInput = self->screenArray[ADD_PASSWORD_SCREEN_USERNAME].updatableObjects["usernameInput"];
-    lv_obj_t *websiteInput = self->screenArray[ADD_PASSWORD_SCREEN_WEBSITE].updatableObjects["websiteInput"];
-
-    lv_textarea_set_text(passwordInput, "");
-    lv_textarea_set_text(usernameInput, "");
-    lv_textarea_set_text(websiteInput, "");
-
-    // clear new password cache
-    self->newPassword.website = "";
-    self->newPassword.username = "";
-    self->newPassword.password = "";
 }
 
-
-Screen ScreenManager::createAddPasswordScreen_Confirm() {
+Screen ScreenManager::createEditPasswordScreen() {
     lv_obj_t *lvScreen = lv_obj_create(NULL);
 
     // set style
     lv_obj_set_style_bg_color(lvScreen, lv_color_hex(0x000000), LV_PART_MAIN);
     //lv_obj_add_style(lvScreen, &globalStyle, 0);
 
-    // website label
+    // website label 
     lv_obj_t *websiteLabel = lv_label_create(lvScreen);
     lv_label_set_text(websiteLabel, "Website");
     lv_obj_align(websiteLabel, LV_ALIGN_TOP_MID, 0, 15);
@@ -71,21 +59,20 @@ Screen ScreenManager::createAddPasswordScreen_Confirm() {
     // password label
     lv_obj_t *passwordLabel = lv_label_create(lvScreen);
     lv_label_set_text(passwordLabel, "Password");
-    lv_obj_align(passwordLabel, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_align(passwordLabel, LV_ALIGN_CENTER, 0, 20);
     lv_obj_add_style(passwordLabel, &globalStyle, 0);
     lv_obj_set_style_border_opa(passwordLabel, LV_OPA_TRANSP, LV_PART_MAIN);
 
-    // save/enter button
-    lv_obj_t *saveButton = lv_btn_create(lvScreen);
-    lv_obj_set_size(saveButton, 100, 40);
-    lv_obj_align(saveButton, LV_ALIGN_CENTER, 0, 60);
-    lv_obj_t *saveButtonLabel = lv_label_create(saveButton);
-    lv_label_set_text(saveButtonLabel, "Save");
-    lv_obj_center(saveButtonLabel);
-    lv_obj_add_event_cb(saveButton, onSaveBtnPressed, LV_EVENT_CLICKED, this);
-    lv_obj_add_style(saveButton, &globalStyle, 0);
+    // edit button
+    lv_obj_t *editButton = lv_btn_create(lvScreen);
+    lv_obj_set_size(editButton, 100, 40);
+    lv_obj_align(editButton, LV_ALIGN_CENTER, 0, 70);
+    lv_obj_t *editButtonLabel = lv_label_create(editButton);
+    lv_label_set_text(editButtonLabel, "Edit");
+    lv_obj_center(editButtonLabel);
+    lv_obj_add_event_cb(editButton, onEditBtnPressed, LV_EVENT_CLICKED, this);
+    lv_obj_add_style(editButton, &globalStyle, 0);
     
-
     // back button
     lv_obj_t *backBtn = lv_btn_create(lvScreen);
     lv_obj_set_size(backBtn, 40, 40);
@@ -96,19 +83,25 @@ Screen ScreenManager::createAddPasswordScreen_Confirm() {
     lv_obj_align(backBtnLabel, LV_ALIGN_CENTER, 0, 0);
     lv_obj_add_style(backBtn, &globalStyle, 0);
 
+    // delete button
+    lv_obj_t *deleteBtn = lv_btn_create(lvScreen);
+    lv_obj_set_size(deleteBtn, 40, 40);
+    lv_obj_align(deleteBtn, LV_ALIGN_TOP_RIGHT, -10, 10);
+    lv_obj_add_event_cb(deleteBtn, onDeleteBtnPressed, LV_EVENT_CLICKED, this); // todo change function
+    lv_obj_t *deleteBtnLabel = lv_label_create(deleteBtn);
+    lv_label_set_text(deleteBtnLabel, "Del");
+    lv_obj_align(deleteBtnLabel, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_add_style(deleteBtn, &globalStyle, 0);
 
     // screen stuct
     Screen screen;
     screen.lvScreen = lvScreen;
-
     screen.onDisplayFunc = [this, usernameLabel, passwordLabel, websiteLabel]() {
-        //this->displayPasswords(0);
-        lv_label_set_text(websiteLabel, this->newPassword.website.c_str());
-        String usernameLabelString = "Username: " + this->newPassword.username;
+        lv_label_set_text(websiteLabel, this->selectedPassword.website.c_str());
+        String usernameLabelString = "Username: " + this->selectedPassword.username;
         lv_label_set_text(usernameLabel, usernameLabelString.c_str());
-        String passwordLabelString = "Password: " + this->newPassword.password;
+        String passwordLabelString = "Password: " + this->selectedPassword.password;
         lv_label_set_text(passwordLabel, passwordLabelString.c_str());
     };
-
     return screen;
 }

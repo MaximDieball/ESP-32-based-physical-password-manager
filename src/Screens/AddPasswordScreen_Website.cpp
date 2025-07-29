@@ -9,7 +9,21 @@ extern lv_style_t titel;
 
 static void onBackBtnPressed(lv_event_t *e){
     auto self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
-    self->queueScreen(PWM_SCR);
+    self->queuePrevScreen();
+
+    // clear input fieds
+    lv_obj_t *passwordInput = self->screenArray[ADD_PASSWORD_SCREEN_PASSWORD].updatableObjects["passwordInput"];
+    lv_obj_t *usernameInput = self->screenArray[ADD_PASSWORD_SCREEN_USERNAME].updatableObjects["usernameInput"];
+    lv_obj_t *websiteInput = self->screenArray[ADD_PASSWORD_SCREEN_WEBSITE].updatableObjects["websiteInput"];
+
+    lv_textarea_set_text(passwordInput, "");
+    lv_textarea_set_text(usernameInput, "");
+    lv_textarea_set_text(websiteInput, "");
+
+    // clear new password cache
+    self->newPassword.website = "";
+    self->newPassword.username = "";
+    self->newPassword.password = "";
 }
 
 Screen ScreenManager::createAddPasswordScreen_Website() {
@@ -62,8 +76,15 @@ Screen ScreenManager::createAddPasswordScreen_Website() {
 
     // enter function / called when pressing enter
     screen.enterFunc = [this, websiteInput]() {
+        // store website and change screen
         this->newPassword.website = String(lv_textarea_get_text(websiteInput));
         this->queueScreen(ADD_PASSWORD_SCREEN_USERNAME);
+    };
+
+    screen.onDisplayFunc = [this, websiteInput](){
+        // get website from newPassword / used when editing password
+        String website = this->newPassword.website;
+        lv_textarea_set_text(websiteInput, website.c_str());
     };
 
     screen.updatableObjects["websiteInput"] = websiteInput;

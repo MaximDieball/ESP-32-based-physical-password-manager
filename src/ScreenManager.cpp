@@ -12,6 +12,7 @@ void ScreenManager::createScreens() {
     screenArray[6] = createAddPasswordScreen_Username();
     screenArray[7] = createAddPasswordScreen_Password();
     screenArray[8] = createAddPasswordScreen_Confirm();
+    screenArray[9] = createEditPasswordScreen();
 }
 
 void ScreenManager::changeScreen(int index) {
@@ -39,6 +40,9 @@ void ScreenManager::changeScreen(int index) {
         Serial.println("running onDisplayFunc");
         screen.onDisplayFunc();
     }
+
+    // store in screen history
+    screenStack.push(index);
   
     Serial.println("succesfully changed screen");
 }
@@ -78,3 +82,11 @@ void ScreenManager::reset(){
   this->focusedTextarea = NULL;
   //TODO delete saved password
 }
+
+void ScreenManager::queuePrevScreen(){
+  if (this->screenStack.size() <= 1) return;
+  this->screenStack.pop();
+  int prevScreen = this->screenStack.top();
+  this->queueScreen(prevScreen);
+}
+

@@ -66,6 +66,12 @@ Screen ScreenManager::createAddPasswordScreen_Username() {
         this->queueScreen(ADD_PASSWORD_SCREEN_PASSWORD);
     };
 
+    screen.onDisplayFunc = [this, usernameInput](){
+        // get username from newPassword / used when editing password
+        String username = this->newPassword.username;
+        lv_textarea_set_text(usernameInput, username.c_str());
+    };
+
     screen.updatableObjects["usernameInput"] = usernameInput;
 
     return screen;

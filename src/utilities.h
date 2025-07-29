@@ -60,19 +60,6 @@
 #define SCREEN_WIDTH  320
 #define SCREEN_HEIGHT 240
 
-// screens 
-enum ScreenIndex {  // TODO RENAME 
-  ADD_MPW_SCR = 0,  // add master password screen
-  LOCK_SCR = 1,     
-  HOME_SCR = 2,     
-  PWM_SCR = 3,      // password manager screen
-  USERNAME_SCREEN = 4,
-  ADD_PASSWORD_SCREEN_WEBSITE = 5,
-  ADD_PASSWORD_SCREEN_USERNAME = 6,
-  ADD_PASSWORD_SCREEN_PASSWORD = 7,
-  ADD_PASSWORD_SCREEN_CONFIRM = 8
-};
-
 
 class Util{
   public:

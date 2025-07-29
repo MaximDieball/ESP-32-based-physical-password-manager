@@ -6,8 +6,7 @@
 #include <vector>
 
 struct Password {
-    //lv_obj_t* button = nullptr;
-    //std::function<void()> buttonFunc;
+    String prevWebsite; // used to find and delete old password entry if website edited 
     String website;
     String username;
     String password;

@@ -37,6 +37,11 @@ static void onPasswordBtnPressed(lv_event_t *e){
     }
 }
 
+static void onEditBtnPressed(lv_event_t *e){
+    auto self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
+    self->queueScreen(EDIT_PASSWORD_SCREEN);
+}
+
 
 
 void displayUsername(ScreenManager* self){
@@ -105,7 +110,6 @@ Screen ScreenManager::createPasswordScreen() {
     lv_obj_align(typePasswordLabel, LV_ALIGN_CENTER, 0, 0);
     lv_obj_add_style(typePasswordBtn, &globalStyle, 0);
     
-
     // type both button
     lv_obj_t *typeBothBtn = lv_btn_create(lvScreen);
     lv_obj_set_size(typeBothBtn, 100, 40);
@@ -115,6 +119,7 @@ Screen ScreenManager::createPasswordScreen() {
     lv_label_set_text(typeBothLabel, "Type Both");
     lv_obj_align(typeBothLabel, LV_ALIGN_CENTER, 0, 0);
     lv_obj_add_style(typeBothBtn, &globalStyle, 0);
+    
     // back button
     lv_obj_t *backBtn = lv_btn_create(lvScreen);
     lv_obj_set_size(backBtn, 40, 40);
@@ -129,7 +134,7 @@ Screen ScreenManager::createPasswordScreen() {
     lv_obj_t *editBtn = lv_btn_create(lvScreen);
     lv_obj_set_size(editBtn, 40, 40);
     lv_obj_align(editBtn, LV_ALIGN_TOP_RIGHT, -10, 10);
-    lv_obj_add_event_cb(editBtn, onBackBtnPressed, LV_EVENT_CLICKED, this); // todo change function
+    lv_obj_add_event_cb(editBtn, onEditBtnPressed, LV_EVENT_CLICKED, this); // todo change function
     lv_obj_t *editBtnLabel = lv_label_create(editBtn);
     lv_label_set_text(editBtnLabel, "Edit");
     lv_obj_align(editBtnLabel, LV_ALIGN_CENTER, 0, 0);
