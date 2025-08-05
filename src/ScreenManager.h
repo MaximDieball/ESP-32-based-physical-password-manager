@@ -2,6 +2,7 @@
 #include <lvgl.h>
 #include <functional>
 #include "PasswordManager.h"
+#include "HidManager.h"
 #include <map>
 #include <stack>
 
@@ -31,10 +32,11 @@ enum ScreenIndex {  // TODO RENAME
 
 class ScreenManager {
   public:
-    ScreenManager(PasswordManager& passwordManager)
-      : passwordManager(passwordManager) {}
+    ScreenManager(PasswordManager& passwordManager, HidManager& hidManager)
+      : passwordManager(passwordManager), hidManager(hidManager) {}
 
     PasswordManager passwordManager;
+    HidManager hidManager;
     // TODO maybe move to password manager
     Password selectedPassword;
     Password newPassword;
@@ -52,6 +54,7 @@ class ScreenManager {
     void queuePrevScreen();
   
   private:
+
     int queuedScreen = -1; // index of screen 
     std::stack<int> screenStack;
     void changeScreen(int index);

@@ -19,13 +19,20 @@
 #include "Fonts/ShareTechMono_Regular.c"
 #include "Fonts/ShareTechMono_Regular_28.c"
 
+#include "USB.h"
+#include "USBHIDKeyboard.h"
+#include "src/HidManager.h"
+
 #define USE_CUSTOM_STYLE 1
 
 TFT_eSPI tft;
 TouchDrvGT911 touch;
 
+USBHIDKeyboard Keyboard;
+HidManager hidManager(Keyboard);
+
 PasswordManager passwordManager;
-ScreenManager scrManager(passwordManager);
+ScreenManager scrManager(passwordManager, hidManager);
 InputManager inputManager(scrManager, touch);
 Util util;
 
@@ -111,6 +118,11 @@ void touchInputSetup(){
   touch.setMirrorXY(false, true);
 }
 
+void hidSetup(){
+  USB.begin();
+  Keyboard.begin();
+}
+
 void setupSD(){
   digitalWrite(BOARD_SDCARD_CS, HIGH);
   digitalWrite(RADIO_CS_PIN, HIGH);
@@ -168,6 +180,7 @@ void setup() {
   touchInputSetup();
   setupLvgl();
   setupSD();
+  hidSetup();
 
   pinMode(BOARD_BL_PIN, OUTPUT);
   setBrightness(16);
