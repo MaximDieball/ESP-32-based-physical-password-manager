@@ -13,9 +13,6 @@
 #include "src/PasswordManager.h"
 #include "src/InputManager.h"
 
-// import Screens.h / so all screens get compiled
-//#include "Screens/Screens.h"
-
 #include "Fonts/ShareTechMono_Regular.c"
 #include "Fonts/ShareTechMono_Regular_28.c"
 

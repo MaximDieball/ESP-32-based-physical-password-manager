@@ -19,9 +19,11 @@ public:
   static void encryptAndSavePasswordJson();
   static bool checkForMasterPassword();
   static bool checkMasterPassword(String password);
+  static String generatePassword();
   void loadPasswordData();
   void savePasswordData();
   std::vector<Password> passwordList;
 private:
   static String generateHashedKey(String password, unsigned char salt[16]); 
+  static const String passwordChars;
 };

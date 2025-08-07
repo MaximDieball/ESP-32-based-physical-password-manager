@@ -69,7 +69,17 @@ void ScreenManager::displayPasswords(int i){
     lv_obj_t *websiteLabel = lv_obj_get_child(passwordButtons[i], 0); // get label as child from button
 
     // change label
-    lv_label_set_text(websiteLabel, entry.website.c_str());
+    // correct string length
+    int maxLen;
+    if(i == 0 || i == 4){
+      maxLen = 10;
+    } else if (i == 1 || i ==3){
+      maxLen = 11;
+    } else{
+      maxLen = 12;
+    }
+    String website = this->shortenString(entry.website, maxLen); // correct length
+    lv_label_set_text(websiteLabel, website.c_str());
 
     // create context / store the password for each button in array (with this/self so both can get passed to the function as one obj)
     PasswordButtonContext* ctx = new PasswordButtonContext{ this, entry };
@@ -78,6 +88,7 @@ void ScreenManager::displayPasswords(int i){
   }
 
 }
+
 
 Screen ScreenManager::createPasswordManagerScreen() {
   // base screen / not scrollabel

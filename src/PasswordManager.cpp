@@ -12,6 +12,9 @@
 
 #include <ArduinoJson.h>
 #include <vector>
+#include <esp_system.h>
+
+const String PasswordManager::passwordChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
 void PasswordManager::setMasterPassword(String password){
   unsigned char salt[16];
@@ -175,4 +178,21 @@ void PasswordManager::savePasswordData(){
   }
 
   SDManager::writeJsonFile("/main.json", rawPasswordData);
+}
+
+String PasswordManager::generatePassword(){
+  String password = "";
+  srand(time(0)); // seed rand
+  for(int i = 0; i<3; i++){
+    for(int j = 0; j<5; j++){
+      int len = passwordChars.length();
+      int random_index =  esp_random() % len;
+      char random_char = passwordChars.charAt(random_index);
+      password += random_char;
+    }
+    if(i < 2){
+      password += "-";
+    }
+  }
+  return password;
 }

@@ -12,27 +12,45 @@ static void onBackBtnPressed(lv_event_t *e){
     self->queueScreen(ADD_PASSWORD_SCREEN_USERNAME);
 }
 
+static void onGeneratePasswordBtnPressed(lv_event_t *e){
+    auto self = static_cast<ScreenManager*>(lv_event_get_user_data(e));
+    lv_obj_t* passwordInput = self->currentScreen.updatableObjects["passwordInput"];
+    String newPassword = self->passwordManager.generatePassword();
+    lv_textarea_set_text(passwordInput, newPassword.c_str());
+}
+
+
 Screen ScreenManager::createAddPasswordScreen_Password() {
     lv_obj_t *lvScreen = lv_obj_create(NULL);
 
     // set style
     lv_obj_set_style_bg_color(lvScreen, lv_color_hex(0x000000), LV_PART_MAIN);
-    //lv_obj_add_style(lvScreen, &globalStyle, 0);
+    //lv_obj_add_style(lvScreen, &globalStyle, 0);   
 
-    // username label
-    lv_obj_t *usernameLabel = lv_label_create(lvScreen);
-    lv_label_set_text(usernameLabel, "Password");
-    lv_obj_align(usernameLabel, LV_ALIGN_TOP_MID, 0, 15);
-    lv_obj_add_style(usernameLabel, &titel, 0);
+    // password label
+    lv_obj_t *passwordLabel = lv_label_create(lvScreen);
+    lv_label_set_text(passwordLabel, "Password");
+    lv_obj_align(passwordLabel, LV_ALIGN_TOP_MID, 0, 15);
+    lv_obj_add_style(passwordLabel, &titel, 0);
 
-    // website input field
+    // password input field
     lv_obj_t *passwordInput = lv_textarea_create(lvScreen);
     lv_obj_add_event_cb(passwordInput, onTextAreaFocused, LV_EVENT_FOCUSED, this);
-    lv_obj_set_width(passwordInput, 200);
-    lv_obj_align(passwordInput, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_size(passwordInput, 175, 40);
+    lv_obj_align(passwordInput, LV_ALIGN_CENTER, -22, 0);
     lv_textarea_set_placeholder_text(passwordInput, "Enter Password");
     lv_textarea_set_one_line(passwordInput, true);
     lv_obj_add_style(passwordInput, &globalStyle, 0);
+
+    // generage password button
+    lv_obj_t *generatePasswordBtn = lv_btn_create(lvScreen);
+    lv_obj_set_size(generatePasswordBtn, 40, 36);
+    lv_obj_align(generatePasswordBtn, LV_ALIGN_CENTER, 90, 0);
+    lv_obj_add_event_cb(generatePasswordBtn, onGeneratePasswordBtnPressed, LV_EVENT_CLICKED, this);
+    lv_obj_t *generatePasswordLabel = lv_label_create(generatePasswordBtn);
+    lv_label_set_text(generatePasswordLabel, "Gen");
+    lv_obj_align(generatePasswordLabel, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_add_style(generatePasswordBtn, &globalStyle, 0);
 
     // ok/enter button
     lv_obj_t *okButton = lv_btn_create(lvScreen);

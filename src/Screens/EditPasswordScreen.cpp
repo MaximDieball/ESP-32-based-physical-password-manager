@@ -97,10 +97,15 @@ Screen ScreenManager::createEditPasswordScreen() {
     Screen screen;
     screen.lvScreen = lvScreen;
     screen.onDisplayFunc = [this, usernameLabel, passwordLabel, websiteLabel]() {
-        lv_label_set_text(websiteLabel, this->selectedPassword.website.c_str());
-        String usernameLabelString = "Username: " + this->selectedPassword.username;
+        String website = this->shortenString(this->selectedPassword.website, 12);
+        lv_label_set_text(websiteLabel, website.c_str());   // shorten string
+
+        String usernameLabelString = "Username: " + this->selectedPassword.username;   
+        usernameLabelString = this->shortenString(usernameLabelString, 30); // shorten string
         lv_label_set_text(usernameLabel, usernameLabelString.c_str());
+
         String passwordLabelString = "Password: " + this->selectedPassword.password;
+        passwordLabelString = this->shortenString(passwordLabelString, 30); // shorten string
         lv_label_set_text(passwordLabel, passwordLabelString.c_str());
     };
     return screen;

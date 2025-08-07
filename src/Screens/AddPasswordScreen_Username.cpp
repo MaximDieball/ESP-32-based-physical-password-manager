@@ -25,7 +25,7 @@ Screen ScreenManager::createAddPasswordScreen_Username() {
     lv_obj_align(usernameLabel, LV_ALIGN_TOP_MID, 0, 15);
     lv_obj_add_style(usernameLabel, &titel, 0);
 
-    // website input field
+    // username input field
     lv_obj_t *usernameInput = lv_textarea_create(lvScreen);
     lv_obj_add_event_cb(usernameInput, onTextAreaFocused, LV_EVENT_FOCUSED, this);
     lv_obj_set_width(usernameInput, 200);

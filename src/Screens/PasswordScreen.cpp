@@ -21,7 +21,8 @@ static void onUsernameBtnPressed(lv_event_t *e){
     if(strcmp(usernameLabelText, username) == 0){
         lv_label_set_text(usernameLabel, "Show Username <o>");
     } else{
-        lv_label_set_text(usernameLabel, self->selectedPassword.username.c_str());
+        String username = self->shortenString(self->selectedPassword.username, 17); // shorten string
+        lv_label_set_text(usernameLabel, username.c_str());
     }
 }
 
@@ -33,7 +34,8 @@ static void onPasswordBtnPressed(lv_event_t *e){
     if(strcmp(passwordLabelText, password) == 0){
         lv_label_set_text(passwordLabel, "Show password <o>");
     } else{
-        lv_label_set_text(passwordLabel, self->selectedPassword.password.c_str());
+        String password = self->shortenString(self->selectedPassword.password, 17);  // shorten string
+        lv_label_set_text(passwordLabel, password.c_str());
     }
 }
 
@@ -65,15 +67,14 @@ static void ontypeBothBtnPressed(lv_event_t *e){
 
 
 
-void displayUsername(ScreenManager* self){
-    Serial.println("displayUsername");
+void displayInfo(ScreenManager* self){
+
     lv_obj_t *usernameLabel = self->currentScreen.updatableObjects["usernameLabel"];
     lv_obj_t *websiteLabel = self->currentScreen.updatableObjects["websiteLabel"];
     lv_obj_t *passwordLabel = self->currentScreen.updatableObjects["passwordLabel"];
-    /*lv_label_set_text(usernameLabel, self->selectedPassword.username.c_str());
-    lv_label_set_text(websiteLabel, self->selectedPassword.website.c_str());
-    lv_label_set_text(passwordLabel, self->selectedPassword.password.c_str());*/
-    lv_label_set_text(websiteLabel, self->selectedPassword.website.c_str());
+    
+    String website = self->shortenString(self->selectedPassword.website, 12); // shorten string
+    lv_label_set_text(websiteLabel, website.c_str());
     lv_label_set_text(usernameLabel, "Show Username <o>");
     lv_label_set_text(passwordLabel, "Show Password <o>");
 }
@@ -87,7 +88,8 @@ Screen ScreenManager::createPasswordScreen() {
     
     // website label
     lv_obj_t *websiteLabel = lv_label_create(lvScreen);
-    lv_label_set_text(websiteLabel, this->selectedPassword.website.c_str());
+    String website = this->shortenString(this->selectedPassword.website, 12);
+    lv_label_set_text(websiteLabel, website.c_str());
     lv_obj_align(websiteLabel, LV_ALIGN_TOP_MID, 0, 15);
     lv_obj_add_style(websiteLabel, &titel, 0);
     
@@ -115,7 +117,7 @@ Screen ScreenManager::createPasswordScreen() {
     lv_obj_t *typeUsernameBtn = lv_btn_create(lvScreen);
     lv_obj_set_size(typeUsernameBtn, 40, 40);
     lv_obj_align(typeUsernameBtn, LV_ALIGN_CENTER, 90, -30);
-    lv_obj_add_event_cb(typeUsernameBtn, onTypeUsernameBtnPressed, LV_EVENT_CLICKED, this); // todo change function
+    lv_obj_add_event_cb(typeUsernameBtn, onTypeUsernameBtnPressed, LV_EVENT_CLICKED, this); 
     lv_obj_t *typeUsernameLabel = lv_label_create(typeUsernameBtn);
     lv_label_set_text(typeUsernameLabel, "Type");
     lv_obj_align(typeUsernameLabel, LV_ALIGN_CENTER, 0, 0);
@@ -166,7 +168,7 @@ Screen ScreenManager::createPasswordScreen() {
     screen.lvScreen = lvScreen;
     screen.mainTextarea = NULL;
     screen.onDisplayFunc = [this]() {
-        displayUsername(this);
+        displayInfo(this);
     };
   
     // enter function / called when pressing enter

@@ -52,6 +52,8 @@ class ScreenManager {
     void queueScreen(int screenIndex);
     void reset();
     void queuePrevScreen();
+    
+    String shortenString(String string, int len);
   
   private:
 

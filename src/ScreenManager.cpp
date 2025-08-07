@@ -90,3 +90,11 @@ void ScreenManager::queuePrevScreen(){
   this->queueScreen(prevScreen);
 }
 
+String ScreenManager::shortenString(String str, int len) {
+    if (str.length() > len) {
+        str.remove(len-3);
+        str += "...";
+    }
+    return str;
+}
+
