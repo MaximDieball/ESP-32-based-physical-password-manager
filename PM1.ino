@@ -177,7 +177,7 @@ void setup() {
   touchInputSetup();
   setupLvgl();
   setupSD();
-  hidSetup();
+  hidSetup(); // comment out for debugging
 
   pinMode(BOARD_BL_PIN, OUTPUT);
   setBrightness(16);
@@ -205,7 +205,7 @@ void setup() {
   Serial.println("beginning app startup logic");
   // create screens
   scrManager.createScreens();
-  if(PasswordManager::checkForMasterPassword()){
+  if(passwordManager.checkForMasterPassword()){
     Serial.println("master password found");
     scrManager.queueScreen(LOCK_SCR);
     //scrManager.queueScreen(HOME_SCR);

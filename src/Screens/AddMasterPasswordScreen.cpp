@@ -58,11 +58,12 @@ Screen ScreenManager::createAddMasterPasswordScreen() {
   
   // enter function / called when pressing enter
   screen.enterFunc = [passwordInput, this]() {
+    // set master password
     String masterPassword = String(lv_textarea_get_text(passwordInput));
     this->passwordManager.setMasterPassword(masterPassword);
-    //SDManager::writeFile("/salt.txt", masterPassword);  old way of saving password
     Serial.print("Setting Master Password: ");
     Serial.println(masterPassword);
+    this->queueScreen(HOME_SCR);
   };
 
   return screen;

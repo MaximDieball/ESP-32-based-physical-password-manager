@@ -1,7 +1,4 @@
 {
   "passwords": [
-    { "website": "google", "username": "test", "password": "test" },
-    { "website": "facebook", "username": "bob", "password": "abc" },
-    { "website": "twitter", "username": "charlie", "password": "xyz" }
   ]
 }
