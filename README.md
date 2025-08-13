@@ -10,10 +10,10 @@ It securely stores all your usernames and passwords in an **encrypted** format o
 ## Motivation / Problem
 
 I created this project because I was frustrated with manually copying passwords from my phone or using weaker easy to remember passwords when working on non-personal computers.  
-When logging into a site on a library or school computer, I didn’t want to log into my password manager and risk exposing all my credentials.
+When logging into a site on a library or school computer, I didn’t want to log into my password manager and possibly expose all my credentials.
 
-To solve this, I built a **portable physical password manager** that can be used anywhere without giving the host computer access to your entire password vault.  
-While a smartphone password manager could do something similar, this device goes a step further by **automatically typing in usernames and passwords**, making the process faster and letting you use longer, more secure passwords. Because the passwords are saved on the device it is also safer than trusting a third party cloud provider with your passwords.
+To solve this, I built a **portable physical password manager** that can be used anywhere without giving the host computer access to your password manager.  
+While you could look up passwords on your smartphone password manager, this device can also **automatically typing in usernames and passwords**, making the process faster and letting you use longer, more secure passwords. Because the passwords are saved on the device it is also safer than trusting a third party cloud provider with your passwords.
 
 
 ## Watch the Demo Video! (Press on the picture below)
@@ -30,7 +30,7 @@ While a smartphone password manager could do something similar, this device goes
     
 -   **Add, delete, and edit**  credentials.
     
--   **Type**  username, password, or both, with automatic tab between input fields.
+-   **Type**  username, password, or both, with a tab between to automaticly change input fields.
     
 
 #### Coming Soon
@@ -78,7 +78,7 @@ While a smartphone password manager could do something similar, this device goes
     
 5.  Press the  **"Type"**  button next to a username or password to type it individually.
     
-6.  Press  **"Type Both"**  to type both with a tab in between.
+6.  Press  **"Type Both"**  to type both with a tab between to automaticly change input fields.
     
 
 ### Generate a Secure Password
