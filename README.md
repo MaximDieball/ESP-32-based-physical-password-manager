@@ -12,8 +12,7 @@ When logging into a site on a library or school computer, I didn’t want to log
 
 To solve this, I built a **portable physical password manager** that can be used anywhere without giving the host computer access to your entire password vault.  
 While a smartphone password manager could do something similar, this device goes a step further by **automatically typing in usernames and passwords**, making the process faster and letting you use longer, more secure passwords. Because the passwords are saved on the device it is also safer than trusting a third party cloud provider with your passwords.
-
-![device](assets/device.jpg)
+<img src="assets/device.jpg" alt="Description" width="300">
 
 [Demo Video](assets/UsingDeviceOnDiscord.mp4)
 
