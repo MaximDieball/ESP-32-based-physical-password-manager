@@ -15,7 +15,8 @@ While a smartphone password manager could do something similar, this device goes
 
 ![device](assets/device.jpg)
 
-[Demo Video](assets/UsingDeviceOnDiscord.mp4)
+[![Watch the demo](https://img.youtube.com/vi/TxHuCqJnaCU/maxresdefault.jpg)](https://youtu.be/TxHuCqJnaCU)
+
 
 ## Features
 
