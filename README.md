@@ -1,19 +1,3 @@
-
-# ESP32-Based Physical Password Manager Device
-
-This project is a **physical password manager** built on an **ESP32** (LilyGO T-Deck).  
-It securely stores all your usernames and passwords in an **encrypted** format on the device with **no internet connection**, allowing you to quickly look them up.  
-The device can also be plugged into a computer and act as a USB HID keyboard to **automatically type out complex passwords** with one click. No more entering them character by character.
-
-## Motivation / Problem
-
-I created this project because I was frustrated with manually copying passwords from my phone or using weaker easy to remember passwords when working on non-personal computers.  
-When logging into a site on a library or school computer, I didn’t want to log into my password manager and risk exposing all my credentials.
-
-To solve this, I built a **portable physical password manager** that can be used anywhere without giving the host computer access to your entire password vault.  
-While a smartphone password manager could do something similar, this device goes a step further by **automatically typing in usernames and passwords**, making the process faster and letting you use longer, more secure passwords. Because the passwords are saved on the device it is also safer than trusting a third party cloud provider with your passwords.
-
-
 # ESP32-Based Physical Password Manager Device
 
 This project is a **physical password manager** built on an **ESP32** (LilyGO T-Deck).  
@@ -123,4 +107,3 @@ While a smartphone password manager could do something similar, this device goes
     -   **Mini keyboard**
         
 -   **SD card**
-
