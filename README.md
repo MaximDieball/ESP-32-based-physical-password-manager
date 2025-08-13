@@ -1,3 +1,4 @@
+
 # ESP32-Based Physical Password Manager Device
 
 This project is a **physical password manager** built on an **ESP32** (LilyGO T-Deck).  
@@ -12,6 +13,9 @@ When logging into a site on a library or school computer, I didn’t want to log
 To solve this, I built a **portable physical password manager** that can be used anywhere without giving the host computer access to your entire password vault.  
 While a smartphone password manager could do something similar, this device goes a step further by **automatically typing in usernames and passwords**, making the process faster and letting you use longer, more secure passwords. Because the passwords are saved on the device it is also safer than trusting a third party cloud provider with your passwords.
 
+![device](assets/device.jpg)
+
+[Demo Video](assets/UsingDeviceOnDiscord.mp4)
 
 ## Features
 
@@ -107,3 +111,6 @@ While a smartphone password manager could do something similar, this device goes
     -   **Mini keyboard**
         
 -   **SD card**
+
+##  Set Up Device from GitHub Repo
+soon
